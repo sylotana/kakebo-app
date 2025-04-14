@@ -1,4 +1,9 @@
-print("Budgetshell App for Tracking Expenses")
+print(
+    "-------------------------------------",
+    "Budgetshell App for Tracking Expenses",
+    "-------------------------------------",
+    sep="\n"
+)
 
 while True:
     # Menu
