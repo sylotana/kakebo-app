@@ -5,16 +5,17 @@ print(
     sep="\n"
 )
 
+menu_items = [
+    "(1) Get balance",
+    "(2) Add income",
+    "(3) Add expenses",
+    "(4) Exit"
+]
 while True:
-    # Menu
-    print(
-        "Menu",
-        "1. Add income",
-        "2. Add expense",
-        "3. Exit",
-        sep='\n'
-    )
-    menu_select = input()
+    print("\nSelect a menu item:")
+    print(*menu_items, sep="\n")
+
+    choice = input("Select: ")
 
     if menu_select == '1':
         income = input("Enter your day income: ")
