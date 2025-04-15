@@ -12,7 +12,9 @@ menu_items = [
     "(4) Exit"
 ]
 
-total_income = 0.0
+incomes = []
+total_incomes = 0.0
+expenses = []
 total_expenses = 0.0
 
 while True:
@@ -22,11 +24,11 @@ while True:
     choice = input("Select: ")
 
     if choice == "1":
-        balance = total_income - total_expenses
+        balance = round(total_incomes - total_expenses, 2)
         print(
             "=====================================",
             f"Total balance: {balance}",
-            f"Total income: {total_income}",
+            f"Total income: {total_incomes}",
             f"Total expenses: {total_expenses}",
             "=====================================",
             sep='\n'
@@ -36,12 +38,17 @@ while True:
         )
 
     elif choice == "2":
-        income = float(input("Enter your income: "))
-        total_income += income
+        income_comment, income = (
+            input('Enter your income in the format: <comment> <income>: ')
+            .split()
+        )
+        incomes.append((income_comment, float(income)))
+        total_incomes += float(income)
+
         print(
             "=====================================",
             "Income added successfully.",
-            f"Current income: {total_income} (+{income}).",
+            f"Current income: {total_incomes} (+{income}).",
             "=====================================",
             sep="\n"
         )
@@ -50,12 +57,17 @@ while True:
         )
 
     elif choice == "3":
-        expenses = float(input("Enter your expenses: "))
-        total_expenses += expenses
+        expense_comment, expense = (
+            input('Enter your expense in the format: <comment> <expense>: ')
+            .split()
+        )
+        expenses.append((expense_comment, float(expense)))
+        total_expenses += float(expense)
+
         print(
             "=====================================",
             "Expenses added successfully.",
-            f"Current expenses: {total_expenses} (-{expenses}).",
+            f"Current expenses: {total_expenses} (+{expense}).",
             "=====================================",
             sep="\n"
         )
