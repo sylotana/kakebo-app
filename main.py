@@ -9,7 +9,9 @@ menu_items = [
     "(1) Get balance",
     "(2) Add income",
     "(3) Add expenses",
-    "(4) Exit"
+    "(4) Get incomes",
+    "(5) Get expenses",
+    "(6) Exit",
 ]
 
 incomes = []
@@ -76,6 +78,32 @@ while True:
         )
 
     elif choice == "4":
+        if incomes:
+            print("---------------------------------")
+            print(f"| TOTAL\t|\t{total_incomes}\t|")
+            print("---------------------------------")
+            for comment, income in incomes:
+                print(f"| {comment}\t|\t{income}\t|")
+                print("---------------------------------")
+        else:
+            print("The income list is empty.")
+
+        input("Press Enter to return to the menu.")
+    
+    elif choice == "5":
+        if expenses:
+            print("---------------------------------")
+            print(f"| TOTAL\t|\t{total_expenses}\t|")
+            print("---------------------------------")
+            for comment, expense in expenses:
+                print(f"| {comment}\t|\t{expense}\t|")
+                print("---------------------------------")
+        else:
+            print("The expenses list is empty.")
+
+        input("Press Enter to return to the menu.")
+
+    elif choice == "6":
         print("Goodbye!")
         break
     else:
