@@ -1,13 +1,23 @@
-incomes = []
-total_incomes = 0.0
-expenses = []
-total_expenses = 0.0
 import ui
 
 print(*ui.app_description(), sep="\n")
 
+while not bool(today_date := input(
+    "Enter a today's date in the format: <dd-mm-yyyy>: "
+)):
+    pass
+
+budget = {
+    today_date: {
+        'incomes': [],
+        'expenses': []
+    }
+}
 
 while True:
+    budget_incomes = budget[today_date]["incomes"]
+    budget_expenses = budget[today_date]["expenses"]
+
     print("\nSelect a menu item:")
     print(*ui.menu(), sep="\n")
 
@@ -15,6 +25,8 @@ while True:
 
     # GET BALANCE
     if choice == "1":
+        total_incomes = sum((i[1] for i in budget_incomes))
+        total_expenses = sum((i[1] for i in budget_expenses))
         balance = round(total_incomes - total_expenses, 2)
         print(
             ui.divider(40, "="),
@@ -34,8 +46,8 @@ while True:
             input('Enter your income in the format: <comment> <income>: ')
             .split()
         )
-        incomes.append((income_comment, float(income)))
-        total_incomes += float(income)
+        budget_incomes.append((income_comment, float(income)))
+        total_incomes = sum((i[1] for i in budget_incomes))
 
         print(
             ui.divider(40, "="),
@@ -54,8 +66,8 @@ while True:
             input('Enter your expense in the format: <comment> <expense>: ')
             .split()
         )
-        expenses.append((expense_comment, float(expense)))
-        total_expenses += float(expense)
+        budget_expenses.append((expense_comment, float(expense)))
+        total_expenses = sum((i[1] for i in budget_expenses))
 
         print(
             ui.divider(40, "="),
@@ -70,11 +82,11 @@ while True:
 
     # GET INCOMES
     elif choice == "4":
-        if incomes:
+        if budget_incomes:
             print(ui.divider(40))
             print(f"| {"TOTAL".ljust(18)}|{str(total_incomes).rjust(17)} |")
             print(ui.divider(40))
-            for comment, income in incomes:
+            for comment, income in budget_incomes:
                 print(f"| {comment.ljust(18)}|{str(income).rjust(17)} |")
                 print(ui.divider(40))
         else:
@@ -84,11 +96,11 @@ while True:
 
     # GET EXPENSES
     elif choice == "5":
-        if expenses:
+        if budget_expenses:
             print(ui.divider(40))
             print(f"| {"TOTAL".ljust(18)}|{str(total_expenses).rjust(17)} |")
             print(ui.divider(40))
-            for comment, expense in expenses:
+            for comment, expense in budget_expenses:
                 print(f"| {comment.ljust(18)}|{str(expense).rjust(17)} |")
                 print(ui.divider(40))
         else:
