@@ -7,12 +7,9 @@ while not bool(today_date := input(
 )):
     pass
 
-budget = {
-    today_date: {
-        'incomes': [],
-        'expenses': []
-    }
-}
+budget = []
+
+
 
 while True:
     budget_incomes = budget[today_date]["incomes"]
@@ -42,11 +39,16 @@ while True:
 
     # ADD INCOME
     elif choice == "2":
-        income_comment, income = (
-            input('Enter your income in the format: <comment> <income>: ')
-            .split()
-        )
-        budget_incomes.append((income_comment, float(income)))
+        user_input = input("Enter income as <comment> <amount>: ")
+        comment, income = user_input.split()
+        income = float(income)
+
+        budget.append({
+            "date": today_date,
+            "type": "income",
+            "amount": income,
+            "comment": comment
+        })
         total_incomes = sum((i[1] for i in budget_incomes))
 
         print(
@@ -62,11 +64,16 @@ while True:
 
     # ADD EXPENSE
     elif choice == "3":
-        expense_comment, expense = (
-            input('Enter your expense in the format: <comment> <expense>: ')
-            .split()
-        )
-        budget_expenses.append((expense_comment, float(expense)))
+        user_input = input("Enter expense as <comment> <amount>: ")
+        comment, expense = user_input.split()
+        expense = float(expense)
+
+        budget.append({
+            "date": today_date,
+            "type": "expense",
+            "amount": expense,
+            "comment": comment
+        })
         total_expenses = sum((i[1] for i in budget_expenses))
 
         print(
