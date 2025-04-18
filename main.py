@@ -32,6 +32,7 @@ while True:
     # GET BALANCE
     if choice == "1":
         total_incomes, total_expenses, balance = calculate_totals(today_date)
+
         print(
             ui.divider(40, "="),
             f"Total balance: {balance}",
@@ -93,9 +94,11 @@ while True:
     # GET INCOMES
     elif choice == "4":
         incomes = get_filtered_transactions("income", today_date)
-        if budget_incomes:
+        total = sum(tx["amount"] for tx in incomes)
+
+        if incomes:
             print(ui.divider(40))
-            print(f"| {"TOTAL".ljust(18)}|{str(total_incomes).rjust(17)} |")
+            print(f"| {'TOTAL'.ljust(18)}|{str(total).rjust(17)} |")
             print(ui.divider(40))
             for tx in incomes:
                 print(
@@ -111,9 +114,11 @@ while True:
     # GET EXPENSES
     elif choice == "5":
         expenses = get_filtered_transactions("expense", today_date)
-        if budget_expenses:
+        total = sum(tx["amount"] for tx in expenses)
+
+        if expenses:
             print(ui.divider(40))
-            print(f"| {"TOTAL".ljust(18)}|{str(total_expenses).rjust(17)} |")
+            print(f"| {'TOTAL'.ljust(18)}|{str(total).rjust(17)} |")
             print(ui.divider(40))
             for tx in expenses:
                 print(
