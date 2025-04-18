@@ -40,9 +40,7 @@ while True:
             ui.divider(40, "="),
             sep='\n'
         )
-        input(
-            "Press Enter to return to the menu."
-        )
+        input("Press Enter to return to the menu.")
 
     # ADD INCOME
     elif choice == "2":
@@ -62,13 +60,11 @@ while True:
         print(
             ui.divider(40, "="),
             "Income added successfully.",
-            f"Current income: {total_incomes} (+{income}).",
+            f"Current total income: {total_incomes} (+{income}).",
             ui.divider(40, "="),
             sep="\n"
         )
-        input(
-            "Press Enter to return to the menu."
-        )
+        input("Press Enter to return to the menu.")
 
     # ADD EXPENSE
     elif choice == "3":
@@ -87,14 +83,12 @@ while True:
 
         print(
             ui.divider(40, "="),
-            "Expenses added successfully.",
-            f"Current expenses: {total_expenses} (+{expense}).",
+            "Expense added successfully.",
+            f"Current total expenses: {total_expenses} (+{expense}).",
             ui.divider(40, "="),
             sep="\n"
         )
-        input(
-            "Press Enter to return to the menu."
-        )
+        input("Press Enter to return to the menu.")
 
     # GET INCOMES
     elif choice == "4":
@@ -103,8 +97,11 @@ while True:
             print(ui.divider(40))
             print(f"| {"TOTAL".ljust(18)}|{str(total_incomes).rjust(17)} |")
             print(ui.divider(40))
-            for comment, income in budget_incomes:
-                print(f"| {comment.ljust(18)}|{str(income).rjust(17)} |")
+            for tx in incomes:
+                print(
+                    f"| {tx['comment'].ljust(18)}"
+                    f"|{str(tx['amount']).rjust(17)} |"
+                )
                 print(ui.divider(40))
         else:
             print("The income list is empty.")
@@ -118,8 +115,11 @@ while True:
             print(ui.divider(40))
             print(f"| {"TOTAL".ljust(18)}|{str(total_expenses).rjust(17)} |")
             print(ui.divider(40))
-            for comment, expense in budget_expenses:
-                print(f"| {comment.ljust(18)}|{str(expense).rjust(17)} |")
+            for tx in expenses:
+                print(
+                    f"| {tx['comment'].ljust(18)}"
+                    f"|{str(tx['amount']).rjust(17)} |"
+                )
                 print(ui.divider(40))
         else:
             print("The expenses list is empty.")
