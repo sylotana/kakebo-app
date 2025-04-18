@@ -58,6 +58,10 @@ def add_transaction(date, type, amount, comment):
     })
 
 
+def format_transaction(type, total, amount):
+    return f"Current total {type}s: {total} (+{amount})."
+
+
 while True:
     wait_text = "Press Enter to return to the menu."
     print("\nSelect a menu item:")
@@ -87,6 +91,7 @@ while True:
         add_transaction(today_date, "income", amount, comment)
 
         total_incomes, _, _ = calculate_totals(today_date)
+        result_line = format_transaction("income", total_incomes, amount)
 
         print(
             ui.divider(40, "="),
@@ -105,6 +110,7 @@ while True:
         add_transaction(today_date, "expense", amount, comment)
         
         _, total_expenses, _ = calculate_totals(today_date)
+        result_line = format_transaction("expense", total_expenses, amount)
 
         print(
             ui.divider(40, "="),
