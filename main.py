@@ -10,6 +10,8 @@ while not bool(today_date := input(
 budget = []
 
 
+def get_filtered_transactions(t_type, date):
+    return [tx for tx in budget if tx["type"] == t_type and tx["date"] == date]
 
 while True:
     budget_incomes = budget[today_date]["incomes"]
@@ -89,6 +91,7 @@ while True:
 
     # GET INCOMES
     elif choice == "4":
+        incomes = get_filtered_transactions("income", today_date)
         if budget_incomes:
             print(ui.divider(40))
             print(f"| {"TOTAL".ljust(18)}|{str(total_incomes).rjust(17)} |")
@@ -103,6 +106,7 @@ while True:
 
     # GET EXPENSES
     elif choice == "5":
+        expenses = get_filtered_transactions("expense", today_date)
         if budget_expenses:
             print(ui.divider(40))
             print(f"| {"TOTAL".ljust(18)}|{str(total_expenses).rjust(17)} |")
