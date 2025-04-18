@@ -62,6 +62,13 @@ def format_transaction(type, total, amount):
     return f"Current total {type}s: {total} (+{amount})."
 
 
+def print_block(title, body_lines):
+    print(ui.divider(40, "="))
+    print(title)
+    print(*body_lines, sep="\n")
+    print(ui.divider(40, "="))
+
+
 while True:
     wait_text = "Press Enter to return to the menu."
     print("\nSelect a menu item:")
@@ -73,13 +80,10 @@ while True:
     if choice == "1":
         total_incomes, total_expenses, balance = calculate_totals(today_date)
 
-        print(
-            ui.divider(40, "="),
+        print_block("Current Balance.", (
             f"Total balance: {balance}",
             f"Total income: {total_incomes}",
-            f"Total expenses: {total_expenses}",
-            ui.divider(40, "="),
-            sep='\n'
+            f"Total expenses: {total_expenses}")
         )
         wait_for_enter(wait_text)
 
@@ -93,13 +97,7 @@ while True:
         total_incomes, _, _ = calculate_totals(today_date)
         result_line = format_transaction("income", total_incomes, amount)
 
-        print(
-            ui.divider(40, "="),
-            "Income added successfully.",
-            f"Current total income: {total_incomes} (+{income}).",
-            ui.divider(40, "="),
-            sep="\n"
-        )
+        print_block("Income added successfully.", (result_line,))
         wait_for_enter(wait_text)
 
     # ADD EXPENSE
@@ -112,13 +110,7 @@ while True:
         _, total_expenses, _ = calculate_totals(today_date)
         result_line = format_transaction("expense", total_expenses, amount)
 
-        print(
-            ui.divider(40, "="),
-            "Expense added successfully.",
-            f"Current total expenses: {total_expenses} (+{expense}).",
-            ui.divider(40, "="),
-            sep="\n"
-        )
+        print_block("Expense added successfully.", (result_line,))
         wait_for_enter(wait_text)
 
     # GET INCOMES
