@@ -13,10 +13,17 @@ budget = []
 def get_filtered_transactions(t_type, date):
     return [tx for tx in budget if tx["type"] == t_type and tx["date"] == date]
 
-while True:
-    budget_incomes = budget[today_date]["incomes"]
-    budget_expenses = budget[today_date]["expenses"]
 
+def calculate_totals(date):
+    incomes = get_filtered_transactions("income", date)
+    expenses = get_filtered_transactions("expense", date)
+    total_income = sum(tx["amount"] for tx in incomes)
+    total_expense = sum(tx["amount"] for tx in expenses)
+    balance = round(total_income - total_expense, 2)
+    return total_income, total_expense, balance
+
+
+while True:
     print("\nSelect a menu item:")
     print(*ui.menu(), sep="\n")
 
@@ -24,9 +31,7 @@ while True:
 
     # GET BALANCE
     if choice == "1":
-        total_incomes = sum((i[1] for i in budget_incomes))
-        total_expenses = sum((i[1] for i in budget_expenses))
-        balance = round(total_incomes - total_expenses, 2)
+        total_incomes, total_expenses, balance = calculate_totals(today_date)
         print(
             ui.divider(40, "="),
             f"Total balance: {balance}",
@@ -51,7 +56,8 @@ while True:
             "amount": income,
             "comment": comment
         })
-        total_incomes = sum((i[1] for i in budget_incomes))
+
+        total_incomes, _, _ = calculate_totals(today_date)
 
         print(
             ui.divider(40, "="),
@@ -76,7 +82,8 @@ while True:
             "amount": expense,
             "comment": comment
         })
-        total_expenses = sum((i[1] for i in budget_expenses))
+
+        _, total_expenses, _ = calculate_totals(today_date)
 
         print(
             ui.divider(40, "="),
