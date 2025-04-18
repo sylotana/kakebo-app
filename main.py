@@ -23,7 +23,12 @@ def calculate_totals(date):
     return total_income, total_expense, balance
 
 
+def wait_for_enter(text):
+    input(text)
+
+
 while True:
+    wait_text = "Press Enter to return to the menu."
     print("\nSelect a menu item:")
     print(*ui.menu(), sep="\n")
 
@@ -41,7 +46,7 @@ while True:
             ui.divider(40, "="),
             sep='\n'
         )
-        input("Press Enter to return to the menu.")
+        wait_for_enter(wait_text)
 
     # ADD INCOME
     elif choice == "2":
@@ -65,7 +70,7 @@ while True:
             ui.divider(40, "="),
             sep="\n"
         )
-        input("Press Enter to return to the menu.")
+        wait_for_enter(wait_text)
 
     # ADD EXPENSE
     elif choice == "3":
@@ -89,7 +94,7 @@ while True:
             ui.divider(40, "="),
             sep="\n"
         )
-        input("Press Enter to return to the menu.")
+        wait_for_enter(wait_text)
 
     # GET INCOMES
     elif choice == "4":
@@ -109,7 +114,7 @@ while True:
         else:
             print("The income list is empty.")
 
-        input("Press Enter to return to the menu.")
+        wait_for_enter(wait_text)
 
     # GET EXPENSES
     elif choice == "5":
@@ -129,7 +134,7 @@ while True:
         else:
             print("The expenses list is empty.")
 
-        input("Press Enter to return to the menu.")
+        wait_for_enter(wait_text)
 
     # EXIT
     elif choice == "6":
