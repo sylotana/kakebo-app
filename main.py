@@ -49,6 +49,15 @@ def print_transactions(transactions, title):
     print("+--------------------+------------------+")
 
 
+def add_transaction(date, type, amount, comment):
+    budget.append({
+        "date": date,
+        "type": type,
+        "amount": amount,
+        "comment": comment
+    })
+
+
 while True:
     wait_text = "Press Enter to return to the menu."
     print("\nSelect a menu item:")
@@ -73,15 +82,9 @@ while True:
     # ADD INCOME
     elif choice == "2":
         user_input = input("Enter income as <comment> <amount>: ")
-        comment, income = user_input.split()
-        income = float(income)
-
-        budget.append({
-            "date": today_date,
-            "type": "income",
-            "amount": income,
-            "comment": comment
-        })
+        comment, amount = user_input.split()
+        amount = float(amount)
+        add_transaction(today_date, "income", amount, comment)
 
         total_incomes, _, _ = calculate_totals(today_date)
 
@@ -97,16 +100,10 @@ while True:
     # ADD EXPENSE
     elif choice == "3":
         user_input = input("Enter expense as <comment> <amount>: ")
-        comment, expense = user_input.split()
-        expense = float(expense)
-
-        budget.append({
-            "date": today_date,
-            "type": "expense",
-            "amount": expense,
-            "comment": comment
-        })
-
+        comment, amount = user_input.split()
+        amount = float(amount)
+        add_transaction(today_date, "expense", amount, comment)
+        
         _, total_expenses, _ = calculate_totals(today_date)
 
         print(
