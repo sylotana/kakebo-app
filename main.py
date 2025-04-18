@@ -27,6 +27,28 @@ def wait_for_enter(text):
     input(text)
 
 
+def print_transactions(transactions, title):
+    if not transactions:
+        print("No transactions to display.")
+        return
+
+    total = sum(tx["amount"] for tx in transactions)
+
+    if title:
+        print(title)
+
+    print("+--------------------+------------------+")
+    print("| Comment            | Amount           |")
+    print("+--------------------+------------------+")
+
+    for tx in transactions:
+        print(f"| {tx['comment'].ljust(18)} | {str(tx['amount']).rjust(16)} |")
+
+    print("+--------------------+------------------+")
+    print(f"| {'TOTAL'.ljust(18)} | {str(total).rjust(16)} |")
+    print("+--------------------+------------------+")
+
+
 while True:
     wait_text = "Press Enter to return to the menu."
     print("\nSelect a menu item:")
@@ -99,41 +121,13 @@ while True:
     # GET INCOMES
     elif choice == "4":
         incomes = get_filtered_transactions("income", today_date)
-        total = sum(tx["amount"] for tx in incomes)
-
-        if incomes:
-            print(ui.divider(40))
-            print(f"| {'TOTAL'.ljust(18)}|{str(total).rjust(17)} |")
-            print(ui.divider(40))
-            for tx in incomes:
-                print(
-                    f"| {tx['comment'].ljust(18)}"
-                    f"|{str(tx['amount']).rjust(17)} |"
-                )
-                print(ui.divider(40))
-        else:
-            print("The income list is empty.")
-
+        print_transactions(incomes, today_date)
         wait_for_enter(wait_text)
 
     # GET EXPENSES
     elif choice == "5":
         expenses = get_filtered_transactions("expense", today_date)
-        total = sum(tx["amount"] for tx in expenses)
-
-        if expenses:
-            print(ui.divider(40))
-            print(f"| {'TOTAL'.ljust(18)}|{str(total).rjust(17)} |")
-            print(ui.divider(40))
-            for tx in expenses:
-                print(
-                    f"| {tx['comment'].ljust(18)}"
-                    f"|{str(tx['amount']).rjust(17)} |"
-                )
-                print(ui.divider(40))
-        else:
-            print("The expenses list is empty.")
-
+        print_transactions(expenses, today_date)
         wait_for_enter(wait_text)
 
     # EXIT
