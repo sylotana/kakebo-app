@@ -69,6 +69,19 @@ def print_block(title, body_lines):
     print(ui.divider(40, "="))
 
 
+def get_transaction_input(prompt, t_type=str):
+    while True:
+        try:
+            result_value = input(prompt).strip()
+            return t_type(result_value)
+        except ValueError:
+            print(
+                f"Invalid input: '{result_value}', "
+                f"expected value of type '{t_type.__name__}'"
+            )
+            continue
+
+
 while True:
     wait_text = "Press Enter to return to the menu."
     print("\nSelect a menu item:")
@@ -89,9 +102,10 @@ while True:
 
     # ADD INCOME
     elif choice == "2":
-        user_input = input("Enter income as <comment> <amount>: ")
-        comment, amount = user_input.split()
-        amount = float(amount)
+        amount = get_transaction_input("Enter income amount: ", float)
+        comment = get_transaction_input(
+            "Enter income comment (can contain spaces): "
+        )
         add_transaction(today_date, "income", amount, comment)
 
         total_incomes, _, _ = calculate_totals(today_date)
@@ -102,11 +116,12 @@ while True:
 
     # ADD EXPENSE
     elif choice == "3":
-        user_input = input("Enter expense as <comment> <amount>: ")
-        comment, amount = user_input.split()
-        amount = float(amount)
+        amount = get_transaction_input("Enter expense amount: ", float)
+        comment = get_transaction_input(
+            "Enter expense comment (can contain spaces): "
+        )
         add_transaction(today_date, "expense", amount, comment)
-        
+
         _, total_expenses, _ = calculate_totals(today_date)
         result_line = format_transaction("expense", total_expenses, amount)
 
