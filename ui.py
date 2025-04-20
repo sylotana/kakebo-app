@@ -1,3 +1,6 @@
+WAIT_TEXT = "Press Enter to return to the menu."
+
+
 def divider(count, sybmol="-"):
     return sybmol * count
 
@@ -23,3 +26,36 @@ def menu():
 
 def table():
     pass
+
+
+def format_transaction(type, total, amount):
+    return f"Current total {type}s: {total} (+{amount})."
+
+
+def info(title, body_lines):
+    print(divider(40, "="))
+    print(title)
+    print(*body_lines, sep="\n")
+    print(divider(40, "="))
+
+
+def transactions(transactions, title):
+    if not transactions:
+        print("No transactions to display.")
+        return
+
+    total = sum(tx["amount"] for tx in transactions)
+
+    if title:
+        print(title)
+
+    print("+--------------------+------------------+")
+    print("| Comment            | Amount           |")
+    print("+--------------------+------------------+")
+
+    for tx in transactions:
+        print(f"| {tx['comment'].ljust(18)} | {str(tx['amount']).rjust(16)} |")
+
+    print("+--------------------+------------------+")
+    print(f"| {'TOTAL'.ljust(18)} | {str(total).rjust(16)} |")
+    print("+--------------------+------------------+")
