@@ -7,6 +7,7 @@ print(*ui.app_description(), sep="\n")
 date = logic.get_date()
 
 while True:
+    data = storage.load_data(date)
     print("\nSelect a menu item:")
     print(*ui.menu(), sep="\n")
 
@@ -15,7 +16,7 @@ while True:
     # GET BALANCE
     if choice == "1":
         total_incomes, total_expenses, balance = (
-            logic.calculate_totals(storage.data, date)
+            logic.calculate_totals(data, date)
         )
 
         ui.info("Current Balance.", (
@@ -31,9 +32,17 @@ while True:
         comment = logic.get_transaction_input(
             "Enter income comment (can contain spaces): "
         )
-        logic.add_transaction(storage.data, date, "income", amount, comment)
+        transaction = {
+            "date": date,
+            "type": "income",
+            "amount": amount,
+            "comment": comment
+        }
 
-        total_incomes, _, _ = logic.calculate_totals(storage.data, date)
+        storage.save_data(transaction)
+        data.append(transaction)
+
+        total_incomes, _, _ = logic.calculate_totals(data, date)
         result_line = ui.format_transaction("income", total_incomes, amount)
 
         ui.info("Income added successfully.", (result_line,))
@@ -45,9 +54,18 @@ while True:
         comment = logic.get_transaction_input(
             "Enter expense comment (can contain spaces): "
         )
-        logic.add_transaction(storage.data, date, "expense", amount, comment)
 
-        _, total_expenses, _ = logic.calculate_totals(storage.data, date)
+        transaction = {
+            "date": date,
+            "type": "expense",
+            "amount": amount,
+            "comment": comment
+        }
+
+        storage.save_data(transaction)
+        data.append(transaction)
+
+        _, total_expenses, _ = logic.calculate_totals(data, date)
         result_line = ui.format_transaction("expense", total_expenses, amount)
 
         ui.info("Expense added successfully.", (result_line,))
@@ -55,13 +73,13 @@ while True:
 
     # GET INCOMES
     elif choice == "4":
-        incomes = logic.get_filtered_transactions(storage.data, "income", date)
+        incomes = logic.get_filtered_transactions(data, "income", date)
         ui.transactions(incomes, date)
         input(ui.WAIT_TEXT)
 
     # GET EXPENSES
     elif choice == "5":
-        expenses = logic.get_filtered_transactions(storage.data, "expense", date)
+        expenses = logic.get_filtered_transactions(data, "expense", date)
         ui.transactions(expenses, date)
         input(ui.WAIT_TEXT)
 
