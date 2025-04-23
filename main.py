@@ -28,46 +28,15 @@ while True:
 
     # ADD INCOME
     elif choice == "2":
-        amount = logic.get_transaction_input("Enter income amount: ", float)
-        comment = logic.get_transaction_input(
-            "Enter income comment (can contain spaces): "
-        )
-        transaction = {
-            "date": date,
-            "type": "income",
-            "amount": amount,
-            "comment": comment
-        }
-
+        transaction, result_line = logic.add_transaction(data, date, "income")
         storage.save_data(transaction)
-        data.append(transaction)
-
-        total_incomes, _, _ = logic.calculate_totals(data, date)
-        result_line = ui.format_transaction("income", total_incomes, amount)
-
         ui.info("Income added successfully.", (result_line,))
         input(ui.WAIT_TEXT)
 
     # ADD EXPENSE
     elif choice == "3":
-        amount = logic.get_transaction_input("Enter expense amount: ", float)
-        comment = logic.get_transaction_input(
-            "Enter expense comment (can contain spaces): "
-        )
-
-        transaction = {
-            "date": date,
-            "type": "expense",
-            "amount": amount,
-            "comment": comment
-        }
-
+        transaction, result_line = logic.add_transaction(data, date, "expense")
         storage.save_data(transaction)
-        data.append(transaction)
-
-        _, total_expenses, _ = logic.calculate_totals(data, date)
-        result_line = ui.format_transaction("expense", total_expenses, amount)
-
         ui.info("Expense added successfully.", (result_line,))
         input(ui.WAIT_TEXT)
 

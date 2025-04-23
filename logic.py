@@ -24,13 +24,29 @@ def get_transaction_input(prompt, t_type=str):
             continue
 
 
-def add_transaction(data, date, type, amount, comment):
-    data.append({
+def add_transaction(data, date, t_type):
+    amount = get_transaction_input(f"Enter {t_type} amount: ", float)
+    comment = get_transaction_input(
+        f"Enter {t_type} comment (can contain spaces): "
+    )
+    transaction = {
         "date": date,
-        "type": type,
+        "type": t_type,
         "amount": amount,
         "comment": comment
-    })
+    }
+
+    data.append(transaction)
+    totals = calculate_totals(data, date)
+
+    if t_type == "income":
+        total = totals[0]  # total_income
+    else:
+        total = totals[1]  # total_expense
+
+    result_line = f"Current total {t_type}s: {total} (+{amount})."
+
+    return transaction, result_line
 
 
 def get_date():
