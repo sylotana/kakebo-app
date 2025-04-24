@@ -1,8 +1,19 @@
-def get_filtered_transactions(data, t_type, date):
+from typing import Type, TypeVar, Union
+
+
+T = TypeVar("T")
+
+
+def get_filtered_transactions(
+        data: list[dict[str, Union[str, float]]],
+        t_type: str,
+        date: str) -> list[dict[str, Union[str, float]]]:
     return [tx for tx in data if tx["type"] == t_type and tx["date"] == date]
 
 
-def calculate_totals(data, date):
+def calculate_totals(
+        data: list[dict[str, Union[str, float]]],
+        date: str) -> tuple[float, float, float]:
     incomes = get_filtered_transactions(data, "income", date)
     expenses = get_filtered_transactions(data, "expense", date)
     total_income = sum(tx["amount"] for tx in incomes)
@@ -11,7 +22,7 @@ def calculate_totals(data, date):
     return total_income, total_expense, balance
 
 
-def get_transaction_input(prompt, t_type=str):
+def get_transaction_input(prompt: str, t_type: Type[T] = str) -> T:
     while True:
         try:
             result_value = input(prompt).strip()
@@ -24,7 +35,10 @@ def get_transaction_input(prompt, t_type=str):
             continue
 
 
-def add_transaction(data, date, t_type):
+def add_transaction(
+        data: list[dict[str, Union[str, float]]],
+        date: str,
+        t_type: str) -> tuple[dict[str, Union[str, float]], str]:
     amount = get_transaction_input(f"Enter {t_type} amount: ", float)
     comment = get_transaction_input(
         f"Enter {t_type} comment (can contain spaces): "
@@ -49,7 +63,7 @@ def add_transaction(data, date, t_type):
     return transaction, result_line
 
 
-def get_date():
+def get_date() -> str:
     while not bool(date := input(
         "Enter a today's date in the format: <dd-mm-yyyy>: "
     )):
