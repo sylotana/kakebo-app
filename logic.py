@@ -6,8 +6,8 @@ T = TypeVar("T")
 
 def get_filtered_transactions(
         data: list[dict[str, Union[str, float]]],
-        t_type: str,
-        date: str) -> list[dict[str, Union[str, float]]]:
+        date: str,
+        t_type: str) -> list[dict[str, Union[str, float]]]:
     return [tx for tx in data if tx["type"] == t_type and tx["date"] == date]
 
 
