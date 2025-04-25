@@ -6,6 +6,24 @@ print(*ui.app_description(), sep="\n")
 
 date = logic.get_date()
 
+
+def handle_transaction(data: list[dict], date: str, t_type: str) -> None:
+    """Add a transaction to the data list based on the given date and type.
+
+    Args:
+        data (list[dict]): List of transaction dictionaries.
+        date (str): Date in "dd-mm-yyyy" format.
+        t_type (str): Transaction type ("income" or "expense").
+
+    Returns:
+        None
+    """
+    transaction, result_line = logic.add_transaction(data, date, t_type)
+    storage.save_data(transaction)
+    ui.info("{t_type.title()} added successfully.", (result_line,))
+    ui.wait_for_user_input()
+
+
 while True:
     data = storage.load_data(date)
     print("\nSelect a menu item:")
@@ -28,17 +46,11 @@ while True:
 
     # ADD INCOME
     elif choice == "2":
-        transaction, result_line = logic.add_transaction(data, date, "income")
-        storage.save_data(transaction)
-        ui.info("Income added successfully.", (result_line,))
-        input(ui.WAIT_TEXT)
+        handle_transaction(data, date, "income")
 
     # ADD EXPENSE
     elif choice == "3":
-        transaction, result_line = logic.add_transaction(data, date, "expense")
-        storage.save_data(transaction)
-        ui.info("Expense added successfully.", (result_line,))
-        input(ui.WAIT_TEXT)
+        handle_transaction(data, date, "expense")
 
     # GET INCOMES
     elif choice == "4":
