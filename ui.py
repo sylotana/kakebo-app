@@ -1,4 +1,14 @@
-WAIT_TEXT = "Press Enter to return to the menu."
+def wait_for_user_input(message: str = "Press Enter to continue...") -> None:
+    """Display a message and wait for the user to press Enter.
+
+    Args:
+        message (str): The message to display.
+          Defaults to "Press Enter to continue...".
+
+    Returns:
+        None
+    """
+    input(f"\n{message}")
 
 
 def divider(count, sybmol="-"):
