@@ -40,6 +40,31 @@ def handle_get_transaction(data: list[dict], date: str, t_type: str) -> None:
     ui.wait_for_user_input()
 
 
+def handle_get_balance(data: list[dict], date: str) -> None:
+    """Displays the balance summary for a specified date.
+
+    Calculates and shows the total income, total expenses, and net balance
+    based on transactions for the given date.
+
+    Args:
+        data (list[dict]): List of transaction dictionaries.
+        date (str): Date in "dd-mm-yyyy" format.
+
+    Returns:
+        None
+    """
+    total_incomes, total_expenses, balance = (
+        logic.calculate_totals(data, date)
+    )
+
+    ui.info("Current Balance.", (
+        f"Total balance: {balance}",
+        f"Total income: {total_incomes}",
+        f"Total expenses: {total_expenses}")
+    )
+    ui.wait_for_user_input()
+
+
 while True:
     data = storage.load_data(date)
     print("\nSelect a menu item:")
@@ -49,16 +74,7 @@ while True:
 
     # GET BALANCE
     if choice == "1":
-        total_incomes, total_expenses, balance = (
-            logic.calculate_totals(data, date)
-        )
-
-        ui.info("Current Balance.", (
-            f"Total balance: {balance}",
-            f"Total income: {total_incomes}",
-            f"Total expenses: {total_expenses}")
-        )
-        input(ui.WAIT_TEXT)
+        handle_get_balance(data, date)
 
     # ADD INCOME
     elif choice == "2":
