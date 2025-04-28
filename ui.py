@@ -11,11 +11,11 @@ def wait_for_user_input(message: str = "Press Enter to continue...") -> None:
     input(f"\n{message}")
 
 
-def divider(count, sybmol="-"):
-    return sybmol * count
+def divider(count: int, symbol: str = "-") -> str:
+    return symbol * count
 
 
-def app_description():
+def app_description() -> tuple[str, ...]:
     return (
         divider(40),
         "Budgetshell App for Tracking Expenses",
@@ -23,7 +23,7 @@ def app_description():
     )
 
 
-def menu():
+def menu() -> tuple[str, ...]:
     return (
         "(1) Get balance",
         "(2) Add income",
@@ -34,27 +34,23 @@ def menu():
     )
 
 
-def table():
-    pass
+def format_transaction(t_type: str, total: float, amount: float) -> str:
+    return f"Current total {t_type}s: {total} (+{amount})."
 
 
-def format_transaction(type, total, amount):
-    return f"Current total {type}s: {total} (+{amount})."
-
-
-def info(title, body_lines):
+def info(title: str, body_lines: tuple[str, ...]) -> None:
     print(divider(40, "="))
     print(title)
     print(*body_lines, sep="\n")
     print(divider(40, "="))
 
 
-def transactions(transactions, title):
-    if not transactions:
+def transactions(data: list[dict[str, str | float]], title: str) -> None:
+    if not data:
         print("No transactions to display.")
         return
 
-    total = sum(tx["amount"] for tx in transactions)
+    total = sum(tx["amount"] for tx in data)
 
     if title:
         print(title)
@@ -63,7 +59,7 @@ def transactions(transactions, title):
     print("| Comment            | Amount           |")
     print("+--------------------+------------------+")
 
-    for tx in transactions:
+    for tx in data:
         print(f"| {tx['comment'].ljust(18)} | {str(tx['amount']).rjust(16)} |")
 
     print("+--------------------+------------------+")

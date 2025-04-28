@@ -35,8 +35,8 @@ def handle_get_transaction(data: list[dict], date: str, t_type: str) -> None:
     Returns:
         None
     """
-    transaction = logic.get_filtered_transactions(data, date, t_type)
-    ui.transactions(transaction, date)
+    transactions = logic.get_filtered_transactions(data, date, t_type)
+    ui.transactions(transactions, date)
     ui.wait_for_user_input()
 
 
