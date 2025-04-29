@@ -1,6 +1,5 @@
 import os
 from datetime import datetime
-from typing import Union
 
 DIR = "./storage/"
 
@@ -21,14 +20,14 @@ def get_filename_by_date(date_str: str) -> str:
     return date.strftime("%Y-%m") + ".txt"
 
 
-def load_data(date: str) -> list[dict[str, Union[str, float]]]:
+def load_data(date: str) -> list[dict[str, str | float]]:
     """Load transaction data from file by date.
 
     Args:
         date (str): Date string in the format "dd-mm-yyyy".
 
     Returns:
-        list[dict[str, Union[str, float]]]: List of transactions with keys:
+        list[dict[str, str | float]]: List of transactions with keys:
           "date", "type", "amount", and "comment".
     """
     file_name = f"{DIR}{get_filename_by_date(date)}"
@@ -39,7 +38,7 @@ def load_data(date: str) -> list[dict[str, Union[str, float]]]:
                 values = line.strip().split(";")
                 data.append({
                     "date": values[0],
-                    "type": values[1],
+                    "t_type": values[1],
                     "amount": float(values[2]),
                     "comment": values[3]
                 })
@@ -49,7 +48,7 @@ def load_data(date: str) -> list[dict[str, Union[str, float]]]:
         print(e)
 
 
-def save_data(info: dict[str, Union[str, float]]) -> None:
+def save_data(info: dict[str, str | float]) -> None:
     """Save transaction to file by date
 
     Args:
