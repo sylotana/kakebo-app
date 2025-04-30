@@ -1,3 +1,4 @@
+from models.transaction import Transaction
 import storage
 import logic
 import ui
