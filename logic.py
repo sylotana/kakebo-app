@@ -1,22 +1,25 @@
 from typing import Type, TypeVar
 
+from models.transaction import Transaction
+
+
 T = TypeVar("T")
 
 
 def get_filtered_transactions(
-        data: list[dict[str, str | float]],
+        data: list[Transaction],
         date: str,
-        t_type: str) -> list[dict[str, str | float]]:
-    return [tx for tx in data if tx["type"] == t_type and tx["date"] == date]
+        t_type: str) -> list[Transaction]:
+    return [tx for tx in data if tx.t_type == t_type and tx.date == date]
 
 
 def calculate_totals(
-        data: list[dict[str, str | float]],
+        data: list[Transaction],
         date: str) -> tuple[float, float, float]:
-    incomes = get_filtered_transactions(data, "income", date)
-    expenses = get_filtered_transactions(data, "expense", date)
-    total_income = sum(tx["amount"] for tx in incomes)
-    total_expense = sum(tx["amount"] for tx in expenses)
+    incomes = get_filtered_transactions(data, date, "income")
+    expenses = get_filtered_transactions(data, date, "expense")
+    total_income = sum(tx.amount for tx in incomes)
+    total_expense = sum(tx.amount for tx in expenses)
     balance = round(total_income - total_expense, 2)
     return total_income, total_expense, balance
 
@@ -35,19 +38,20 @@ def get_transaction_input(prompt: str, t_type: Type[T] = str) -> T:
 
 
 def add_transaction(
-        data: list[dict[str, str | float]],
+        data: list[Transaction],
         date: str,
-        t_type: str) -> tuple[dict[str, str | float], str]:
+        t_type: str) -> tuple[Transaction, str]:
     amount = get_transaction_input(f"Enter {t_type} amount: ", float)
     comment = get_transaction_input(
         f"Enter {t_type} comment (can contain spaces): "
     )
-    transaction = {
-        "date": date,
-        "type": t_type,
-        "amount": amount,
-        "comment": comment
-    }
+
+    transaction = Transaction(
+        date=date,
+        t_type=t_type,
+        amount=amount,
+        comment=comment
+    )
 
     data.append(transaction)
     totals = calculate_totals(data, date)

@@ -1,3 +1,6 @@
+from models.transaction import Transaction
+
+
 def wait_for_user_input(message: str = "Press Enter to continue...") -> None:
     """Display a message and wait for the user to press Enter.
 
@@ -34,8 +37,9 @@ def menu() -> tuple[str, ...]:
     )
 
 
-def format_transaction(t_type: str, total: float, amount: float) -> str:
-    return f"Current total {t_type}s: {total} (+{amount})."
+# This feature is currently not used in the project
+def format_transaction(tx: Transaction, total: float) -> str:
+    return f"Current total {tx.t_type}s: {total} (+{tx.amount})."
 
 
 def info(title: str, body_lines: tuple[str, ...]) -> None:
@@ -45,12 +49,12 @@ def info(title: str, body_lines: tuple[str, ...]) -> None:
     print(divider(40, "="))
 
 
-def transactions(data: list[dict[str, str | float]], title: str) -> None:
+def transactions(data: list[Transaction], title: str) -> None:
     if not data:
         print("No transactions to display.")
         return
 
-    total = sum(tx["amount"] for tx in data)
+    total = sum(tx.amount for tx in data)
 
     if title:
         print(title)
@@ -60,7 +64,7 @@ def transactions(data: list[dict[str, str | float]], title: str) -> None:
     print("+--------------------+------------------+")
 
     for tx in data:
-        print(f"| {tx['comment'].ljust(18)} | {str(tx['amount']).rjust(16)} |")
+        print(f"| {tx.comment.ljust(18)} | {str(tx.amount).rjust(16)} |")
 
     print("+--------------------+------------------+")
     print(f"| {'TOTAL'.ljust(18)} | {str(total).rjust(16)} |")

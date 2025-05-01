@@ -8,11 +8,14 @@ print(*ui.app_description(), sep="\n")
 date = logic.get_date()
 
 
-def handle_add_transaction(data: list[dict], date: str, t_type: str) -> None:
+def handle_add_transaction(
+        data: list[Transaction],
+        date: str,
+        t_type: str) -> None:
     """Add a transaction to the data list based on the given date and type.
 
     Args:
-        data (list[dict]): List of transaction dictionaries.
+        data (list[Transaction]): List of transaction dictionaries.
         date (str): Date in "dd-mm-yyyy" format.
         t_type (str): Transaction type ("income" or "expense").
 
@@ -21,15 +24,21 @@ def handle_add_transaction(data: list[dict], date: str, t_type: str) -> None:
     """
     transaction, result_line = logic.add_transaction(data, date, t_type)
     storage.save_data(transaction)
-    ui.info("{t_type.title()} added successfully.", (result_line,))
+    ui.info(
+        f"{transaction.t_type.title()} added successfully.",
+        (result_line,)
+    )
     ui.wait_for_user_input()
 
 
-def handle_get_transaction(data: list[dict], date: str, t_type: str) -> None:
+def handle_get_transaction(
+        data: list[Transaction],
+        date: str,
+        t_type: str) -> None:
     """Displays filtered transactions by the specified date and type.
 
     Args:
-        data (list[dict]): List of transaction dictionaries.
+        data (list[Transaction]): List of transaction dictionaries.
         date (str): Date in "dd-mm-yyyy" format.
         t_type (str): Transaction type ("income" or "expense").
 
@@ -41,14 +50,16 @@ def handle_get_transaction(data: list[dict], date: str, t_type: str) -> None:
     ui.wait_for_user_input()
 
 
-def handle_get_balance(data: list[dict], date: str) -> None:
+def handle_get_balance(
+        data: list[Transaction],
+        date: str) -> None:
     """Displays the balance summary for a specified date.
 
     Calculates and shows the total income, total expenses, and net balance
     based on transactions for the given date.
 
     Args:
-        data (list[dict]): List of transaction dictionaries.
+        data (list[Transaction]): List of transaction dictionaries.
         date (str): Date in "dd-mm-yyyy" format.
 
     Returns:
@@ -67,7 +78,7 @@ def handle_get_balance(data: list[dict], date: str) -> None:
 
 
 while True:
-    data = storage.load_data(date)
+    data: list[Transaction] = storage.load_data(date)
     print("\nSelect a menu item:")
     print(*ui.menu(), sep="\n")
 
