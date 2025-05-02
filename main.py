@@ -1,6 +1,6 @@
 from models.transaction import Transaction
 import storage
-import logic
+import core.logic as logic
 import ui
 
 print(*ui.app_description(), sep="\n")
