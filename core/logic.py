@@ -1,5 +1,6 @@
-from typing import Type, TypeVar
+from typing import Type, TypeVar, Callable
 
+from .validators import is_positive_number, is_non_empty_string
 from models.transaction import Transaction
 
 
@@ -24,26 +25,36 @@ def calculate_totals(
     return total_income, total_expense, balance
 
 
-def get_transaction_input(prompt: str, t_type: Type[T] = str) -> T:
+def get_transaction_input(
+        prompt: str,
+        cast_type: Type[T] = str,
+        validator: Callable[[str], bool] | None = None,
+        error_message: str = "Invalid input.") -> T:
     while True:
         try:
-            result_value = input(prompt).strip()
-            return t_type(result_value)
-        except ValueError:
-            print(
-                f"Invalid input: '{result_value}', "
-                f"expected value of type '{t_type.__name__}'"
-            )
-            continue
+            user_input = input(prompt).strip()
+            if validator and not validator(user_input):
+                raise ValueError(error_message)
+            return cast_type(user_input)
+        except ValueError as e:
+            print(e)
 
 
 def add_transaction(
         data: list[Transaction],
         date: str,
         t_type: str) -> tuple[Transaction, str]:
-    amount = get_transaction_input(f"Enter {t_type} amount: ", float)
+    amount = get_transaction_input(
+        f"Enter {t_type} amount: ",
+        float,
+        validator=is_positive_number,
+        error_message="Amount must be a positive number."
+    )
     comment = get_transaction_input(
-        f"Enter {t_type} comment (can contain spaces): "
+        f"Enter {t_type} comment (can contain spaces): ",
+        str,
+        validator=is_non_empty_string,
+        error_message="Comment cannot be empty."
     )
 
     transaction = Transaction(
