@@ -1,4 +1,5 @@
 import os
+import json
 from datetime import datetime
 
 from models.transaction import Transaction
@@ -16,58 +17,54 @@ def get_filename_by_date(date_str: str) -> str:
         date_str (str): Date string in the format "dd-mm-yyyy".
 
     Returns:
-        str: Filename in the format "yyyy-mm.txt"
+        str: Filename in the format "yyyy-mm.json"
     """
     date = datetime.strptime(date_str, "%d-%m-%Y").date()
-    return date.strftime("%Y-%m") + ".txt"
+    return date.strftime("%Y-%m") + ".json"
 
 
 def load_data(date: str) -> list[Transaction]:
-    """Load transaction data from file by date.
+    """Load transaction data from JSON file by date.
 
     Args:
         date (str): Date string in the format "dd-mm-yyyy".
 
     Returns:
-        list[Transaction]: List of transactions with keys:
-          "date", "type", "amount", and "comment".
+        list[Transaction]: List of Transaction objects.
     """
     file_name = f"{DIR}{get_filename_by_date(date)}"
     try:
         data = []
         with open(file_name, "r", encoding="utf-8") as f:
-            for line in f:
-                values = line.strip().split(";")
-                transaction = Transaction(
-                    date=values[0],
-                    t_type=values[1],
-                    amount=float(values[2]),
-                    comment=values[3]
-                )
-                data.append(transaction)
-
+            transactions = json.load(f)
+            for tx in transactions:
+                data.append(Transaction(**tx))
         return data
-    except IOError as e:
-        print(e)
-        # to avoid returning `None`
+    except (IOError, json.JSONDecodeError):
         return []
 
 
 def save_data(tx: Transaction) -> None:
-    """Save transaction to file by date
+    """Save transaction to a JSON file by date.
 
     Args:
-        tx (dict): Dictionary containing "date", "type",
-          "amount", and "comment"
+        tx (Transaction): Transaction object to be saved.
 
     Returns:
         None
     """
     file_name = f"{DIR}{get_filename_by_date(tx.date)}"
     try:
-        with open(file_name, "a", encoding="utf-8") as f:
-            result_line = f"{tx.date};{tx.t_type};{tx.amount};{tx.comment}"
+        transactions = load_data(tx.date)  # Load existing transactions
+        transactions.append(tx)  # Add the new transaction
 
-            f.write(result_line + "\n")
+        with open(file_name, "w", encoding="utf-8") as f:
+            # Save transactions list as JSON
+            json.dump(
+                [tx.__dict__ for tx in transactions],
+                f,
+                ensure_ascii=False,
+                indent=4
+            )
     except IOError as e:
         print(e)
