@@ -69,3 +69,13 @@ def transactions(data: list[Transaction], title: str) -> None:
     print("+--------------------+------------------+")
     print(f"| {'TOTAL'.ljust(18)} | {str(total).rjust(16)} |")
     print("+--------------------+------------------+")
+
+
+def print_transactions(data: list[Transaction]) -> None:
+    if not data:
+        print("No transactions found.")
+        return
+
+    print("\nTransactions:")
+    for i, tx in enumerate(data, start=1):
+        print(f"[{i}] ({tx.date}) | {tx.t_type.capitalize():7} | {tx.amount:10.2f} | {tx.comment}")

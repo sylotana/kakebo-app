@@ -104,8 +104,14 @@ while True:
     elif choice == "5":
         handle_get_transaction(data, date, "expense")
 
-    # EXIT
+    # GET TRANSACTIONS
     elif choice == "6":
+        date = logic.get_date()
+        data = storage.load_data(date)
+        ui.print_transactions(data)
+
+    # EXIT
+    elif choice == "7":
         print("Goodbye!")
         break
     else:
