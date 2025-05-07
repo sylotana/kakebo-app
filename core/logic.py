@@ -2,9 +2,12 @@ from typing import Type, TypeVar, Callable
 
 from .validators import is_positive_number, is_non_empty_string
 from models.transaction import Transaction
+from storage.transaction_repository import TransactionRepository
 
 
 T = TypeVar("T")
+
+repo = TransactionRepository()
 
 
 def get_filtered_transactions(
