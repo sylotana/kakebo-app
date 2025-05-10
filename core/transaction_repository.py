@@ -5,7 +5,7 @@ from datetime import datetime
 from models.transaction import Transaction
 
 
-class TransactionStorage:
+class TransactionRepository:
     DIR = "./data/"
 
     def __init__(self) -> None:
@@ -16,7 +16,7 @@ class TransactionStorage:
         date = datetime.strptime(date_str, "%d-%m-%Y").date()
         return os.path.join(self.DIR, date.strftime("%Y-%m") + ".json")
 
-    def load_by_date(self, date: str) -> list[Transaction]:
+    def load(self, date: str) -> list[Transaction]:
         file_name = self._get_filename_by_date(date)
         try:
             with open(file_name, "r", encoding="utf-8") as f:
@@ -26,7 +26,7 @@ class TransactionStorage:
             return []
 
     def save(self, tx: Transaction) -> None:
-        transactions = self.load_by_date(tx.date)
+        transactions = self.load(tx.date)
         transactions.append(tx)
 
         file_name = self._get_filename_by_date(tx.date)
