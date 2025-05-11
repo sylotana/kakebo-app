@@ -1,4 +1,4 @@
-# Budgetshell
+# Kakebo
 Application for accounting of user expenses and income
 
 ## 📝 Commit Convention
