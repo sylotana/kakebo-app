@@ -1,53 +1,22 @@
 from models.transaction import Transaction
-from validators import is_positive_number, is_non_empty_string
-from storage.transaction_storage import TransactionStorage
-from ui import get_transaction_input
+from core.transaction_repository import TransactionRepository
 
 
 class TransactionManager:
-    def __init__(self, repository: TransactionStorage, date: str):
+    def __init__(self, repository: TransactionRepository):
         self.repository = repository
-        self.date = date
-
-    def get_transaction_data(self, t_type: str) -> tuple[float, str]:
-        """Get data for a transaction from the user."""
-        amount = get_transaction_input(
-            f"Enter {t_type} amount: ",
-            float,
-            validator=is_positive_number,
-            error_message="Amount must be a positive number."
-        )
-        comment = get_transaction_input(
-            f"Enter {t_type} comment (can contain spaces): ",
-            str,
-            validator=is_non_empty_string,
-            error_message="Comment cannot be empty."
-        )
-        return amount, comment
-
-    def create_transaction(
-            self,
-            t_type: str,
-            amount: float,
-            comment: str) -> Transaction:
-        """Create a new transaction object."""
-        return Transaction(
-            date=self.date,
-            t_type=t_type,
-            amount=amount,
-            comment=comment
-        )
 
     def add_transaction(self, transaction: Transaction) -> None:
         """Add a transaction to the storage."""
         self.repository.save_data(transaction)
 
+    def get_total(self, date: str, t_type: str) -> float:
+        """Calculate total income for a given date."""
+        txs = self.repository.load(date)
+        return sum(el.amount for el in txs if el.t_type == t_type)
 
-def process_transaction(
-        t_type: str,
-        manager: TransactionManager) -> tuple[Transaction, str]:
-    """Get data from user, create transaction, and add it to storage."""
-    amount, comment = manager.get_transaction_data(t_type)
-    transaction = manager.create_transaction(t_type, amount, comment)
-    manager.add_transaction(transaction)
-    return transaction, f"Transaction added: {transaction}"
+    def get_balance(self, date: str) -> float:
+        """Calculate balance for a given date."""
+        total_income = self.get_total(date, "income")
+        total_expense = self.get_total(date, "expense")
+        return total_income - total_expense
