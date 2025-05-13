@@ -32,3 +32,33 @@ class MenuUI:
                 continue
 
             self.menu_items[int(choice) - 1]["action"]()
+
+
+class MenuHandler:
+    def __init__(self):
+        self.balance = 0
+        self.incomes = []
+        self.expenses = []
+
+    def show_balance(self):
+        print(f"Balance: {self.balance}")
+
+    def add_transaction(self, t_type):
+        amount = float(input(f"Enter amount for {t_type}: "))
+        if t_type == "income":
+            self.incomes.append(amount)
+            self.balance += amount
+        elif t_type == "expense":
+            self.expenses.append(amount)
+            self.balance -= amount
+        print(f"{t_type.capitalize()} of {amount} added.")
+
+    def get_transaction(self, t_type):
+        if t_type == "income":
+            print("Incomes: ", self.incomes)
+        elif t_type == "expense":
+            print("Expenses: ", self.expenses)
+
+    def exit_app(self):
+        print("Exiting application...")
+        exit()
